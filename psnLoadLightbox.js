@@ -1,13 +1,13 @@
-function psnLoadLightbox(chckoutCode) {
-    var scriptId = 'sounoob-pagseguro-lightbox';
+function psnLoadLightbox(chckoutCode, isSandbox) {
+    var scriptId = 'sounoob-pagseguro-lightbox-' + (isSandbox === true ? "sandbox" : "prod");
     if(!document.getElementById(scriptId)) 
     {
-        var filePath = "https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js";
+        var filePath = "https://stc." + (isSandbox === true ? "sandbox." : "") + "pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js";
         var scriptTag = document.createElement("script");
         scriptTag.type = "text/javascript";
         scriptTag.id = scriptId;
         scriptTag.src = filePath + "?bust=" + new Date().getTime();
-        scriptTag.onload = function(loadEvent) {
+        scriptTag.onload = function() {
             psnLightboxReady(chckoutCode);
         }
         document.getElementsByTagName("head")[0].appendChild(scriptTag);
@@ -15,16 +15,23 @@ function psnLoadLightbox(chckoutCode) {
         psnLightboxReady(chckoutCode);
     }
 }
-// Usage
-psnLoadLightbox('B439FB200E0EF5CCC45F6F8E89FD58BF');
-
-/*
-** The easy way to load the lightbox
-*/
 
 function psnLightboxReady(code) {
     PagSeguroLightbox(code);
 }
+
+
+
+
+// Usage
+//Call a prod lightbox
+psnLoadLightbox('B439FB200E0EF5CCC45F6F8E89FD58BF');
+//Call a sandbox lightbox
+psnLoadLightbox('B439FB200E0EF5CCC45F6F8E89FD58BF', true);
+
+/*
+** The easy way to load the lightbox
+*/
 
 /*
 ** The complete way to load the lightbox with callbacks and fallback
